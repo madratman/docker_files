@@ -1,0 +1,19 @@
+FROM ubuntu:14.04
+MAINTAINER Ratnesh Madaan <ratneshmadaan@gmail.com>
+
+# install povray prereqs mentioned at https://github.com/POV-Ray/povray/blob/3.7-stable/unix/README.md (note that we use the 3.7-stable branch)
+RUN apt-get update && \
+	apt-get install git nano libboost-dev libboost-date-time-dev libboost-thread-dev \
+	zlib1g-dev libpng12-dev libjpeg8-dev libtiff5-dev libopenexr-dev -y
+
+WORKDIR "/root"
+RUN git clone https://github.com/POV-Ray/povray.git 
+RUN apt-get install autoconf2.59 g++ cmake build-essential gfortran vim python-dev pkg-config wget -y
+RUN cd povray/ && \
+	cd unix/ && \
+	./prebuild.sh && \
+	cd ../ && \
+	./configure COMPILED_BY="ratneshmadaan@gmail.com" && \
+	make -j `$nproc` && \
+	make install 
+

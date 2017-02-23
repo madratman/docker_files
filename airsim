@@ -1,0 +1,12 @@
+# look at https://github.com/Microsoft/AirSim/blob/master/docs/linux_build.md
+FROM ubuntu:14.04
+LABEL maintainer "ratneshmadaan <ratneshmadaan@gmail.com>"
+
+RUN apt-get update && \
+	apt-get install build-essential software-properties-common -y && \
+	add-apt-repository ppa:george-edison55/cmake-3.x -y \
+	add-apt-repository ppa:ubuntu-toolchain-r/test -y && \
+	apt-get update && \
+	apt-get install gcc-snapshot -y && \
+	apt-get update && \
+	apt-get install gcc-6 g++-6 -y
