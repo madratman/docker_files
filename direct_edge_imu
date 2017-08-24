@@ -1,0 +1,26 @@
+FROM osrf/ros:indigo-desktop-full-trusty
+MAINTAINER Ratnesh Madaan <ratneshmadaan@gmail.com>
+
+RUN apt-get update && \
+  apt-get install -y software-properties-common python-software-properties
+
+## ceres http://ceres-solver.org/installation.html
+RUN apt-get install -y cmake \
+  libgoogle-glog-dev \
+  libatlas-base-dev \
+  libeigen3-dev \
+  libsuitesparse-dev
+RUN add-apt-repository ppa:bzindovic/suitesparse-bugfix-1319687 && \
+  apt-get update && \
+  apt-get install -y libsuitesparse-dev
+
+RUN git clone https://ceres-solver.googlesource.com/ceres-solver \
+  && cd ceres-solver \
+  && mkdir release \
+  && cd release \
+  && cmake .. \
+  && make -j8 \
+  && make test \
+  && make install
+
+WORKDIR "/root"
